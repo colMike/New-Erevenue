@@ -1,0 +1,131 @@
+<div class="vertical-menu">
+
+  <perfect-scrollbar>
+
+    <div id="sidebar-menu">
+  <ul class="metismenu list-unstyled" id="side-menu" #sideMenu>
+    <!-- First level menu -->
+    <li class="sidebar-item" [class.active]="showMenu === 'Dashboard'">
+      <a class="sidebar-link waves-effect waves-dark" routerLink="/">
+        <i ngClass="mdi mdi-view-dashboard"></i>
+        <span class="hide-menu"><b>Dashboard</b></span>
+      </a>
+    </li>
+    <li class="sidebar-item" [class.active]="showMenu === sidebarnavItem.title" *ngFor="let sidebarnavItem of sidebarnavItems"
+        [routerLinkActive]="sidebarnavItem.menus.length!= 0 ? '' : 'active'"
+    >
+      <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true">
+        <i [ngClass]="[sidebarnavItem.icon]"></i>
+        <span class="hide-menu"><b>{{sidebarnavItem.title}}</b></span>
+      </div>
+      <a class="sidebar-link waves-effect waves-dark " [routerLink]="sidebarnavItem.headerClass === '' ? [sidebarnavItem.title] : null"
+         [ngClass]="[sidebarnavItem.headerClass]" *ngIf="!sidebarnavItem.extralink;"  (click)="addExpandClass(sidebarnavItem.title)"
+         [routerLinkActive]="sidebarnavItem.menus.length != 0 ? '' : 'active'"
+       >
+        <i [ngClass]="[sidebarnavItem.icon]"></i>
+        <span class="dropdown"><b>{{sidebarnavItem.title}}</b></span>
+      </a>
+      <!-- Second level menu -->
+      <ul aria-expanded="false" class="sub-menu mm-collapse" *ngIf="submenus.length > 0" [ngClass]="{'in' : showMenu === sidebarnavItem.title }" >
+        <li class="sidebar-item" *ngFor="let sidebarnavSubItem of sidebarnavItem.menus ;let i = index" [class.active]="showSubMenu === sidebarnavSubItem.path">
+          <a class="sidebar-link"    [routerLink]="[sidebarnavSubItem.path]" *ngIf="!sidebarnavSubItem.extralink;" >
+            <i [ngClass]="[sidebarnavSubItem.icon]"></i>
+            <span
+              class="hide-menu"
+            >{{sidebarnavSubItem.rightDisplayName}}</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+    </div>
+  </perfect-scrollbar>
+</div>
+
+
+
+<!--
+ ========== Left Sidebar Start ==========
+<div class="vertical-menu">
+
+  <perfect-scrollbar>
+    - Sidemenu
+    <div id="sidebar-menu">
+       Left Menu Start
+      <ul class="metismenu list-unstyled" id="side-menu" #sideMenu>
+        <li class="sidebar-item" [class.active]="showMenu === 'Dashboard'">
+          <a class="sidebar-link waves-effect waves-dark" routerLink="/">
+            <i ngClass="mdi mdi-view-dashboard"></i>
+            <span class="hide-menu"><b>Dashboard</b></span>
+          </a>
+        </li>
+        <ng-container *ngFor="let item of sidebarnavItems">
+
+          <li class="menu-title" *ngIf="!item.extralink">{{ item.title | translate }}</li>
+           Layouts menu
+          <li *ngIf="item.isLayout">
+            <a href="javascript: void(0);" class="has-arrow">
+              <i class="ri-layout-3-line"></i>
+              <span>Layouts</span>
+            </a>
+            <ul class="sub-menu" aria-expanded="false">
+              <li><a (click)="changeLayout('horizontal')"
+                  href="javascript: void(0);">{{ 'MENUITEMS.LAYOUTS.LIST.HORIZONTAL' | translate}}</a></li>
+              <li><a (click)="lightSidebar()"
+                  href="javascript: void(0);">{{ 'MENUITEMS.LAYOUTS.LIST.LIGHTSIDEBAR' | translate}}</a></li>
+              <li><a (click)="compactSidebar()"
+                  href="javascript: void(0);">{{ 'MENUITEMS.LAYOUTS.LIST.COMPACTSIDEBAR' | translate}}</a></li>
+              <li><a (click)="iconSidebar()"
+                  href="javascript: void(0);">{{ 'MENUITEMS.LAYOUTS.LIST.ICONSIDEBAR' | translate}}</a></li>
+              <li><a (click)="boxedLayout()"
+                  href="javascript: void(0);">{{ 'MENUITEMS.LAYOUTS.LIST.BOXED' | translate}}</a></li>
+            </ul>
+          </li>
+           end Layout menu
+
+          <li *ngIf="!item.isTitle && !item.isLayout">
+            <a *ngIf="hasItems(item)" href="javascript:void(0);" class="is-parent"
+              [ngClass]="{'has-arrow': !item.icon, 'has-dropdown': item.icon}">
+              <i class="bx {{item.icon}}" *ngIf="item.icon"></i>
+              <span> {{ item.title | translate }}</span>
+              <span class="badge badge-pill badge-{{item.badge.variant}} float-right"
+                *ngIf="item.icon">{{item.icon.text | translate}}</span>
+            </a>
+
+            <a [routerLink]="item.link" *ngIf="!hasItems(item)" class="side-nav-link-ref" routerLinkActive="active">
+              <i class="bx {{ item.icon }}" *ngIf="item.icon"></i>
+              <span> {{ item.title | translate }}</span>
+              <span class="badge badge-pill badge-{{item.badge.variant}} float-right"
+                *ngIf="item.badge">{{item.badge.text | translate}}</span>
+            </a>
+
+            <ul *ngIf="hasItems(item)" class="sub-menu" aria-expanded="false">
+
+              <li *ngFor="let subitem of  sidebarnavItem.menus">
+                <a [routerLink]="path" *ngIf="!hasItems(subitem)" class="side-nav-link-ref"
+                  routerLinkActive="active">
+                  {{ rightDisplayName | translate }}
+                </a>
+                <a *ngIf="hasItems(subitem)" class="side-nav-link-a-ref has-arrow" href="javascript:void(0);"
+                  >
+                  {{ rightDisplayName | translate }}
+                </a>
+                <ul *ngIf="hasItems(subitem)" class="sub-menu mm-collapse" aria-expanded="false">
+                  <li *ngFor="let subSubitem of  sidebarnavItem.menus">
+                    <a [routerLink]="path" routerLinkActive="active"
+                      class="side-nav-link-ref">
+                      {{subSubitem.rightDisplayName | translate }}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+     Sidebar
+  </perfect-scrollbar>
+</div>
+ Left Sidebar End
+-->

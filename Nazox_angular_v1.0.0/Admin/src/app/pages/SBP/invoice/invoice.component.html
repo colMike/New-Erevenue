@@ -1,0 +1,319 @@
+<block-ui>
+<div class="container-fluid">
+  <app-pagetitle title="Invoice Details" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
+
+
+  <div class="row" *ngIf="(!appEditMode)" >
+
+    <div class="col-lg-12"  >
+      <div class="card">
+        <div class="card-body">
+
+
+          <div class="table-responsive mt-3"  >
+            <table class="table table-centered datatable dt-responsive nowrap"
+                   style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+              <thead class="thead-light">
+              <tr>
+                <!--   <th style="width: 20px;">
+                 &lt;!&ndash;    <div class="custom-control custom-checkbox">
+                       <input type="checkbox" class="custom-control-input" id="customercheck" />
+                       <label class="custom-control-label" for="customercheck">&nbsp;</label>
+                     </div>&ndash;&gt;
+                   </th>-->
+                <th>Business Id</th>
+                <th>Business Name </th>
+                <th>No Of Employees</th>
+                <th> Fee</th>
+                <th>Status</th>
+
+                <th >Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let app of invoice1; let i= index">
+                <!--     <td>
+                       <div class="custom-control custom-checkbox">
+                         <input type="checkbox" class="custom-control-input" :id="customercheck{{i}}" />
+                         <label class="custom-control-label" :for="customercheck{{i}}">&nbsp;</label>
+                       </div>
+                     </td>-->
+
+                <td>{{app.permitId}}</td>
+                <td>{{app.businessName}}</td>
+                <td>{{app.noOfEmployees}}</td>
+                <td>{{app.fee}}</td>
+                <td>
+                  <div class="badge font-size-12" [ngClass]="{'badge-soft-danger': app.approved === 'Pending Approval',
+                    'badge-soft-success':app.approved === 'Approved'}">
+                    <ngb-highlight [result]="app.approved"></ngb-highlight>
+                  </div>
+                  <!-- {{item.approved}}-->
+                </td>
+
+                <td>
+                  <button type="button"  (click)="initEditinvoice(app)" title="Edit permit">
+
+                    <i class="mdi mdi-pencil font-size-18"></i>
+                  </button>
+
+
+
+                  <!--   <a href="javascript:void(0);" class="text-danger" v-b-tooltip.hover title="Delete">
+                       <i class="mdi mdi-trash-can font-size-18"></i>
+                     </a>-->
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contacts model  -->
+<!--<ng-template #content role="document" let-modal="close"  *ngIf="!isAddMode " >-->
+<div class="modal-header"  >
+
+
+  <button type="button" class="close" aria-label="Close" ><!--(click)="modal('Cross click')"-->
+
+    <!--<span aria-hidden="true">&times;</span>-->
+  </button>
+</div>
+
+<div class="modal-body p-3" *ngIf="(appEditMode)"   >
+
+  <div class="text-left" >
+
+
+    <form  [formGroup]="invoiceForm">
+
+
+
+
+
+
+        <div class="row">
+          <div class="col-md-6">
+            <section class="panel panel-default">
+              <div class="panel-heading input-sm">
+                <strong><span class="glyphicon glyphicon-th"></span>
+                  Business Details </strong>
+              </div>
+              <div class="panel-body">
+
+
+
+                  <div class="form-group col-sm-12 noPadding">
+                    <div class="col-sm-8" style="text-align: left;">
+                      <label for="businessName" class="control-label input-sm">Business
+                        Name
+                      </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm" id="businessName"
+                             formControlName="businessName" readonly>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-12 noPadding">
+                      <div class="col-sm-8" style="text-align: left;">
+                        <label class="control-label">Permit Type <strong style="color:red">*</strong></label>
+                        <ng-select [items]="permitType1"
+                                   bindLabel="permitTypeName"
+                                   bindValue="permitTypeId"
+                                   formControlName="permitTypeId">
+                        </ng-select>
+                      </div>
+                    </div>
+
+
+                  <div class="form-group col-sm-12 noPadding">
+                    <div class="col-sm-4" style="text-align: left;">
+                      <label for="regNo" class="control-label input-sm">Business Id
+                      </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm" id="regNo"
+                             formControlName="regNo" disabled>
+
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-12 noPadding">
+                    <div class="col-sm-4" style="text-align: left;">
+                      <label for="PIN" class="control-label input-sm">KRA
+                        pin </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm" id="PIN"
+                             formControlName="PIN" disabled>
+
+                    </div>
+                  </div>
+                    <div class="form-group col-sm-12 noPadding">
+                      <div class="col-sm-4" style="text-align: left;">
+                        <label for="fee" class="control-label input-sm">Amount Payable </label>
+                      </div>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control input-sm" id="fee"
+                               formControlName="fee" disabled>
+
+                      </div>
+                    </div>
+                  </div>
+
+              </div>
+            </section>
+          </div>
+        </div>
+
+
+        <section class="panel panel-default">
+
+
+          <div class="col-sm-6 noPadding" *ngIf="showPaymentModes && invoiceForm.value.paidStatus !='paid'">
+
+            <div class="col-sm-12">
+              <dl class="dl-horizontal">
+                <div class="col-sm-4" style="text-align: right;">
+                  <label for="serviceCode" class="control-label input-sm">Payment
+                    Mode </label>
+                </div>
+                <div class="col-sm-8 noPadding" style="margin-top:5px">
+                 <!-- <label class="ui-radio"><input name="paymentMode"
+                                                 formControlName="paymentMode" type="radio" value="C" checked><span>Bank</span></label>-->
+                  <label class="ui-radio"><input name="paymentMode"
+                                                 formControlName="paymentMode" type="radio" value="M"><span>Mpesa</span></label>
+                  <!--<label class="ui-radio"><input name="paymentMode"
+                                                 formControlName="paymentMode" type="radio" value="K"><span>Cash</span></label>-->
+                </div>
+
+              </dl>
+            </div>
+            <div class="form-group col-sm-12 noPadding">
+                 <!--*ngIf="invoiceForm.value.paymentMode == 'M'"-->
+
+              <div class="col-sm-12 noPadding">
+                <div class="col-sm-4" style="text-align: right;">
+                  <label for="mpesaCode" class="control-label input-sm">Mpesa
+                    code </label>
+                </div>
+                <div class="col-sm-8 noPadding">
+                  <input type="text" class="form-control input-sm"
+                         style="width: 100%" id="mpesaCode" placeholder="Mpesa code"
+                         formControlName="mpesaCode">
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-sm-12 noPadding"
+                 *ngIf="false">
+              <div class="col-sm-12 noPadding">
+                <div class="col-sm-4" style="text-align: right;">
+                  <label for="mpesaCode" class="control-label input-sm">Receipt
+                    No </label>
+                </div>
+                <div class="col-sm-8 noPadding">
+                  <input type="text" class="form-control input-sm"
+                         style="width: 100%" id="mpesaCode" placeholder="Receipt No"
+                         formControlName="mpesaCode">
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-sm-12 noPadding"
+                 *ngIf="invoiceForm.value.paymentMode =='C'">
+              <div class="col-sm-12 noPadding">
+                <div class="col-sm-4" style="text-align: right;">
+                  <label for="bankName" class="control-label input-sm">Bank
+                    Name</label>
+                </div>
+                <div class="col-sm-8 noPadding">
+                  <input type="text" class="form-control input-sm"
+                         style="width: 100%" id="bankName" placeholder="Bank Name"
+                         formControlName="bankName">
+                </div>
+
+              </div>
+            </div>
+            <div class="form-group col-sm-12 noPadding"
+                 *ngIf="invoiceForm.value.paymentMode =='C'">
+              <div class="col-sm-12 noPadding">
+                <div class="col-sm-4" style="text-align: right;">
+                  <label for="accNo" class="control-label input-sm">Acc.
+                    No </label>
+                </div>
+                <div class="col-sm-8 noPadding">
+                  <input type="text" class="form-control input-sm"
+                         style="width: 100%" id="accNo" placeholder="Account No"
+                         formControlName="accNo">
+                </div>
+
+              </div>
+            </div>
+            <div class="form-group col-sm-12 noPadding"
+                 *ngIf="invoiceForm.value.paymentMode=='C'">
+              <div class="col-sm-12 noPadding">
+                <div class="col-sm-4" style="text-align: right;">
+                  <label for="transNo" class="control-label input-sm">
+                    Transaction No</label>
+                </div>
+                <div class="col-sm-8 noPadding">
+                  <input type="text" class="form-control input-sm"
+                         style="width: 100%" id="transNo"
+                         placeholder="Transaction No" formControlName="transNo">
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      <div class="text-right">
+              <button type="submit"     *ngIf="(invoiceForm.value.paidStatus !='paid' )" (click) ="updateinvoice()" class="btn btn-success">Save</button>
+        <span></span>
+        <a class="btn btn-success input-sm" href="{{reportUrl}}"
+         (click)="printInvoice1()" target="_blank"
+           *ngIf="(invoiceForm.value.paidStatus!='paid' )">Print Invoice</a>
+
+        <a class="btn btn-success input-sm" href="{{reportUrl}}"
+          (click)="printInvoice1()" target="_blank"
+           *ngIf="(invoiceForm.value.paidStatus=='paid' )">Print Invoice receipt</a>
+        <a class="btn btn-success input-sm"  href="{{reportUrl}}"
+           (click)="printPermit()" target="_blank"
+           *ngIf="(invoiceForm.value.paidStatus=='paid' )">Print Permit</a>
+
+        <span></span>
+              <button type="submit"    (click) ="cancel()" class="btn btn-warning">    <span class="glyphicon glyphicon-remove"> Cancel </span></button>
+
+
+              <!--  <button type="button" class="btn btn-info input-sm"
+                        ng-hide="(appStatus=='Paid') || (appStatus=='Rejected') "
+                        style="width: 120px" ng-click="updInvoiceStatus()">
+                  <span class="glyphicon glyphicon-arrow-right" ngc> Save </span>
+                </button>-->
+          <!--    <a class="btn btn-success input-sm" ng-href="{{url}}"
+                 ng-click="printInvoice()" target="_blank"
+                 ng-hide="(appStatus!='Paid')">Print</a>-->
+
+
+
+
+
+          </div>
+
+
+    </form>
+
+      </div>
+
+
+
+  </div>
+
+
+
+
+<!--</ng-template>-->
+</block-ui>

@@ -1,0 +1,836 @@
+<block-ui>
+<div class="container-fluid">
+  <app-pagetitle title="Permit Details" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
+
+
+  <div class="row" *ngIf="(!appEditMode)" >
+
+    <div class="col-lg-12"  >
+      <div class="card">
+        <div class="card-body">
+
+          <div  >
+            <!--  -->
+            <button  type="button" class="btn btn-success mb-2"  (click)="initAddPermit()" >
+
+              <!-- <a href="javascript:void(0);" class="btn btn-success mb-2" (click)="addUser()">-->
+              <i class="mdi mdi-plus mr-2"></i> Apply Permit
+            </button>
+          </div>
+          <div class="table-responsive mt-3"  >
+            <table class="table table-centered datatable dt-responsive nowrap"
+                   style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+              <thead class="thead-light">
+              <tr>
+                <!--   <th style="width: 20px;">
+                 &lt;!&ndash;    <div class="custom-control custom-checkbox">
+                       <input type="checkbox" class="custom-control-input" id="customercheck" />
+                       <label class="custom-control-label" for="customercheck">&nbsp;</label>
+                     </div>&ndash;&gt;
+                   </th>-->
+                <th>Business Id</th>
+                <th>Business Name </th>
+                <th>No Of Employees</th>
+                <th> Fee</th>
+                <th>Status</th>
+
+                <th >Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let app of permit1; let i= index">
+                <!--     <td>
+                       <div class="custom-control custom-checkbox">
+                         <input type="checkbox" class="custom-control-input" :id="customercheck{{i}}" />
+                         <label class="custom-control-label" :for="customercheck{{i}}">&nbsp;</label>
+                       </div>
+                     </td>-->
+
+                <td>{{app.permitId}}</td>
+                <td>{{app.businessName}}</td>
+                <td>{{app.noOfEmployees}}</td>
+                <td>{{app.fee}}</td>
+                <td>
+                  <div class="badge font-size-12" [ngClass]="{'badge-soft-danger': app.approved === 'Pending Approval',
+                    'badge-soft-success':app.approved === 'Approved'}">
+                    <ngb-highlight [result]="app.approved"></ngb-highlight>
+                  </div>
+                  <!-- {{item.approved}}-->
+                </td>
+
+                <td>
+                  <button type="button"  (click)="initEditPermit(app)" title="Edit permit">
+
+                    <i class="mdi mdi-pencil font-size-18"></i>
+                  </button>
+
+
+
+                  <!--   <a href="javascript:void(0);" class="text-danger" v-b-tooltip.hover title="Delete">
+                       <i class="mdi mdi-trash-can font-size-18"></i>
+                     </a>-->
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contacts model  -->
+<!--<ng-template #content role="document" let-modal="close"  *ngIf="!isAddMode " >-->
+<div class="modal-header"  >
+
+
+  <button type="button" class="close" aria-label="Close" ><!--(click)="modal('Cross click')"-->
+
+    <!--<span aria-hidden="true">&times;</span>-->
+  </button>
+</div>
+
+<div class="modal-body p-3" *ngIf="(appEditMode)"   >
+
+  <div class="text-left" >
+
+
+    <form  [formGroup]="permitForm">
+
+
+
+
+
+      <section>
+        <h4 class="card-title">Business Information</h4>
+      <div class="row">
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+        <label for="businessName" class="control-label input-sm">Business
+          Name <strong style="color:red">*</strong></label>
+          </div>
+          <div class="col-sm-8">
+        <input type="text" class="form-control input-sm"
+               id="businessName" placeholder="Business Name"
+               formControlName="businessName">
+        <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+             <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+               <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+             </div>-->
+          </div>
+      </div>
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+          <label for="regNo" class="control-label input-sm">Certificate of incorporation</label>
+          </div>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" id="regNo"
+                 placeholder="Certificate of incorporation" formControlName="regNo">
+          <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+            <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+              <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+            </div>-->
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+            <label for="noOfEmployees" class="control-label input-sm">
+              KRA PIN number <strong style="color:red">*</strong></label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="PIN" placeholder="KRA pin number"
+                   formControlName="PIN">
+            <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                 <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                   <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                 </div>-->
+          </div>
+        </div>
+
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+            <label for="vat" class="control-label input-sm">
+              VAT number</label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="vat" placeholder="VAT number"
+                   formControlName="vat">
+            <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                 <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                   <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                 </div>-->
+          </div>
+        </div>
+
+
+      </div>
+      <div class="row">
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+            <label for="postalAdd" class="control-label input-sm">
+              P.O. BOX <strong style="color:red">*</strong></label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="postalAdd" placeholder="P.O. BOX"
+                   formControlName="postalAdd">
+            <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                 <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                   <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                 </div>-->
+          </div>
+        </div>
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+            <label for="postalCode" class="control-label input-sm">
+              Postal code <strong style="color:red">*</strong></label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="postalCode" placeholder="postalCode"
+                   formControlName="postalCode">
+            <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                 <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                   <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                 </div>-->
+          </div>
+        </div>
+
+      </div>
+     <div class="form-group row">
+      <div class="col-sm-6 noPadding">
+        <div class="col-sm-4" style="text-align: right;">
+          <label for="postalTown" class="control-label input-sm">
+            Postal Town</label>
+        </div>
+        <div class="col-sm-8">
+          <input type="text" class="form-control input-sm"
+                 id="postalTown" placeholder="postalTown"
+                 formControlName="postalTown">
+          <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+               <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                 <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+               </div>-->
+        </div>
+      </div>
+     </div>
+      </section>
+      <section>
+        <h4>Additional business information</h4>
+        <div class="row">
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="businessMobile" class="control-label input-sm">Business mobile number <strong style="color:red">*</strong></label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm"
+                     id="businessMobile" placeholder="Business mobile number"
+                     formControlName="mobileNo">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                   <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                     <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                   </div>-->
+            </div>
+          </div>
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="altMobileNo" class="control-label input-sm">Alternative business mobile number</label>
+            </div>
+
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm" id="altMobileNo"
+                     placeholder="Alternative business mobile number" formControlName="altMobileNo">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+                <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+                  <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+                </div>-->
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="fax" class="control-label input-sm">FAX number</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm"
+                     id="fax" placeholder="FAX number"
+                     formControlName="fax">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                   <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                     <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                   </div>-->
+            </div>
+          </div>
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="email" class="control-label input-sm">Business email <strong style="color:red">*</strong> </label>
+            </div>
+
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm" id="email"
+                     placeholder="Business email " formControlName="email">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+                <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+                  <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+                </div>-->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="landZone" class="control-label input-sm">Business physical address <strong style="color:red">*</strong></label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm"
+                     id="landZone" placeholder="Business physical address"
+                     formControlName="landZone">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                   <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                     <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                   </div>-->
+            </div>
+          </div>
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="plotNo" class="control-label input-sm">Plot number <strong style="color:red">*</strong></label>
+            </div>
+
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm" id="plotNo"
+                     placeholder="Plot number " formControlName="plotNo">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+                <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+                  <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+                </div>-->
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="building" class="control-label input-sm">Building name <strong style="color:red">*</strong></label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm"
+                     id="building" placeholder="Building name"
+                     formControlName="building">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                   <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                     <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                   </div>-->
+            </div>
+          </div>
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="room" class="control-label input-sm">Room/Stall number</label>
+            </div>
+
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm" id="room"
+                     placeholder="Room/Stall number " formControlName="room">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+                <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+                  <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+                </div>-->
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+<br>
+      <section >
+
+        <h4>Business owner's information</h4>
+
+        <div class="row">
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="applicant" class="control-label input-sm">Owner's full name <strong style="color:red">*</strong></label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm"
+                     id="applicant" placeholder="Owner's full name "
+                     formControlName="applicant">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                   <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                     <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                   </div>-->
+            </div>
+          </div>
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="nationalId" class="control-label input-sm">ID Number <strong style="color:red">*</strong></label>
+            </div>
+
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm" id="nationalId"
+                     placeholder="ID Number" formControlName="nationalId">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+                <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+                  <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+                </div>-->
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="applicantFax" class="control-label input-sm">Owners FAX number </label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm"
+                     id="applicantFax" placeholder="Owners FAX number"
+                     formControlName="applicantFax">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                   <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                     <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                   </div>-->
+            </div>
+          </div>
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="applicantMobile" class="control-label input-sm">Owner's mobile number <strong style="color:red">*</strong></label>
+            </div>
+
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm" id="applicantMobile"
+                     placeholder="Owner's mobile number" formControlName="applicantMobile">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+                <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+                  <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+                </div>-->
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+            <label for="personalNumber" class="control-label input-sm">Alternative mobile number </label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="personalNumber" placeholder="Alternative mobile number"
+                   formControlName="personalNumber">
+            <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                 <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                   <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                 </div>-->
+          </div>
+        </div>
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+            <label for="personalAdd" class="control-label input-sm">Owner's P.O. Box Number <strong style="color:red">*</strong> </label>
+          </div>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" id="personalAdd"
+                   placeholder="Owner's P.O. Box Number" formControlName="personalAdd">
+            <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+              <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+                <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+              </div>-->
+          </div>
+        </div>
+
+  </div>
+        <div class="row">
+          <div class="col-sm-6 noPadding">
+            <div class="col-sm-4" style="text-align: right;">
+              <label for="personalCode" class="control-label input-sm">Postal code  </label>
+            </div>
+
+            <div class="col-sm-8">
+              <input type="text" class="form-control input-sm" id="personalCode"
+                     placeholder="Postal code * " formControlName="personalCode">
+              <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+                <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+                  <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+                </div>-->
+            </div>
+          </div>
+        </div>
+
+      </section>
+    <br>
+      <section>
+
+        <h4>Activity Information</h4>
+
+
+      <div class="row">
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+            <label for="businessDesc" class="control-label input-sm">Activity description <strong style="color:red">*</strong></label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="businessDesc" placeholder="Activity description "
+                   formControlName="businessDesc">
+            <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                 <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                   <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                 </div>-->
+          </div>
+        </div>
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+            <label for="area" class="control-label input-sm">Area (M2) <strong style="color:red">*</strong></label>
+          </div>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" id="area"
+                   placeholder="Area (M2)" formControlName="area">
+            <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+              <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+                <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+              </div>-->
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+            <label for="otherActivity" class="control-label input-sm">Other details </label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="otherActivity" placeholder="Other details"
+                   formControlName="otherActivity">
+            <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                 <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                   <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                 </div>-->
+          </div>
+        </div>
+        <div class="col-sm-6 noPadding">
+          <div class="col-sm-4" style="text-align: right;">
+            <label for="noOfEmployees" class="control-label input-sm">Number of employees  </label>
+          </div>
+
+          <div class="col-sm-8">
+            <input type="number" class="form-control input-sm" id="noOfEmployees"
+                   placeholder="Number of employees " formControlName="noOfEmployees">
+            <!-- [ngClass]="{'is-invalid': submitted && form.userNationalId.errors}">
+              <div *ngIf="submitted && form.userNationalId.errors" class="invalid-feedback">
+                <span *ngIf="form.userNationalId.errors.required">userNationalId is mandatory.</span>
+              </div>-->
+          </div>
+        </div>
+
+      </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group  ">
+          <label class="control-label">Permit Type <strong style="color:red">*</strong></label>
+          <ng-select [items]="permitType1"
+                     bindLabel="permitTypeName"
+                     bindValue="permitTypeId"
+                     formControlName="permitTypeId">
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group ">
+          <label class="control-label">Sub County <strong style="color:red">*</strong></label>
+          <ng-select [items]="region1"
+                     bindLabel="subCountyName"
+                     bindValue="subCountyId"
+                     formControlName="subcountyId">
+          </ng-select>
+        </div>
+      </div>
+
+    </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group ">
+            <label class="control-label">Ward <strong style="color:red">*</strong></label>
+
+
+            <ng-select *ngIf="region1" [items]="ward1"
+                       bindLabel="wardName"
+                       bindValue="wardId"
+                       formControlName="wardId">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+<!--
+
+        <select [(ngModel)]="region1">
+          <option *ngFor="let country of region1" [value]="country"> {{ country }} </option>
+        </select>
+
+        <select *ngIf="region1" [(ngModel)]="ward1" [value]="ward1">
+          <option *ngFor="let city of ward1"> {{ city }} </option>
+        </select>
+-->
+
+
+
+      </section>
+     <!-- <div class="col-sm-6 noPadding">
+        <div class="col-sm-4" style="text-align: right;">
+          <label for="noOfEmployees" class="control-label input-sm">No
+            of Employees</label>
+        </div>
+        <div class="col-sm-8">
+          <input type="number" class="form-control input-sm"
+                 id="noOfEmployees" placeholder="No of Employees"
+                 formControlName="noOfEmployees">
+          &lt;!&ndash; [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+               <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                 <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+               </div>&ndash;&gt;
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group  ">
+          <label class="control-label">Permit Type</label>
+          <ng-select [items]="permitType1"
+                     bindLabel="permitTypeName"
+                     bindValue="permitTypeId"
+                     formControlName="permitTypeId">
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group ">
+          <label class="control-label">Sub County</label>
+          <ng-select [items]="region1"
+                     bindLabel="subCountyName"
+                     bindValue="subCountyId"
+                     formControlName="subcountyId">
+          </ng-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="waterAccNo" class="control-label input-sm">Water
+          Conn. No</label>
+        <input type="text" class="form-control input-sm" id="waterAccNo"
+               placeholder="Water Connection No" formControlName="waterAccNo">
+        &lt;!&ndash; [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+             <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+               <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+             </div>&ndash;&gt;
+      </div>
+
+      <div class="form-group row">
+        <label for="emailuser">Email address</label>
+        <input class="form-control" id="emailuser" placeholder="Enter email" formControlName="email"
+        >
+        &lt;!&ndash; [ngClass]="{'is-invalid': submitted && form.email.errors}">
+         <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+           <span *ngIf="form.email.errors.required">Email address is mandatory.</span>
+           <span *ngIf="form.email.errors.pattern">Please enter valid email.</span>
+         </div>&ndash;&gt;
+      </div>
+
+      <div class="form-group row">
+        <label for="electricityAccNo" class="control-label input-sm">Electricity
+          Acc. No</label>
+        <input type="text" class="form-control input-sm"
+               id="electricityAccNo" placeholder="Electricity Account No"
+               formControlName="electricityAccNo">
+        &lt;!&ndash;[ngClass]="{'is-invalid': submitted && form.userPhone.errors}" minlength="10">
+           <div *ngIf="submitted && form.userPhone.errors" class="invalid-feedback">
+             <span *ngIf="form.userPhone.errors.required">Phone is mandatory.</span>
+             <span *ngIf="form.userPhone.errors.minlength">Phone number must be 10 characters.</span>
+           </div>&ndash;&gt;
+      </div>
+
+
+
+
+
+        <div class="form-group row">
+          <label for="businessDesc" class="control-label input-sm">Business
+            Description</label>
+          <textarea type="text" class="form-control input-sm"
+                    id="businessDesc" placeholder="Business Description"
+                    formControlName="businessDesc"></textarea>
+        </div>
+
+      <div class="col-sm-8">
+      <div class="panel-heading input-sm">
+        <strong><span class="glyphicon glyphicon-th input-sm"></span>
+          Contact Information</strong>
+      </div>
+      </div>
+      <div class="panel-body">
+        &lt;!&ndash;
+          <div class="form-group col-sm-12 noPadding">
+            <div class="col-sm-12 noPadding">
+              <div class="col-sm-2" style="text-align: right;">
+                <label for="nationalId" class="control-label input-sm">Name
+                </label>
+              </div>
+              <div class="col-sm-10">
+                <input type="text" class="form-control input-sm" id="plotNo"
+                  placeholder="Name" ng-model="name">
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-sm-12 noPadding">
+            <div class="col-sm-12 noPadding">
+              <div class="col-sm-2" style="text-align: right;">
+                <label for="nationalId" class="control-label input-sm">National
+                  Id </label>
+              </div>
+              <div class="col-sm-10">
+                <input type="text" class="form-control input-sm" id="plotNo"
+                  placeholder="National Id" ng-model="nationalId">
+              </div>
+            </div>
+          </div>
+           &ndash;&gt;
+
+          <div class="form-group row">
+
+              <label for="applicant" class="control-label input-sm">
+                Applicant</label>
+
+
+              <input type="text" class="form-control input-sm" id="applicant"
+                     placeholder="Applicant Name" formControlName="applicant">
+
+          </div>
+        <div class="form-group row">
+
+              <label for="nationalId" class="control-label input-sm">National ID Number</label>
+
+
+              <input type="text" class="form-control input-sm" id="nationalId"
+                     placeholder="National Id" formControlName="nationalId">
+
+          </div>
+
+
+        &lt;!&ndash;  <div class="form-group row">
+
+              <label for="postalAdd" class="control-label input-sm">
+                Postal Address</label>
+
+              <input type="text" class="form-control input-sm" id="postalAdd"
+                     placeholder="Postal Address" formControlName="postalAdd">
+
+          </div>&ndash;&gt;
+       &lt;!&ndash; <div class="form-group row">
+
+
+              <label for="postalCode" class="control-label input-sm">Postal
+                Code</label>
+
+              <input type="text" class="form-control input-sm" id="postalCode"
+                     placeholder="Postal Code" formControlName="postalCode">
+
+          </div>
+&ndash;&gt;
+
+          <div class="form-group row">
+
+              <label for="email" class="control-label input-sm">Email </label>
+
+              <input type="email" class="form-control input-sm"
+                     id="email" placeholder="Email" formControlName="email">
+
+          </div>
+        <div class="form-group row">
+
+
+              <label for="fax" class="control-label input-sm">Fax</label>
+
+              <input type="text" class="form-control input-sm" id="fax"
+                     placeholder="Fax" formControlName="fax">
+            </div>
+          </div>
+
+
+
+          <div class="form-group row">
+
+              <label for="mobileNo" class="control-label input-sm">
+                Mobile No.</label>
+
+              <input type="text" class="form-control input-sm"
+                     mask="9999-999-999" id="mobileNo"
+                     placeholder="Telephone(Mobile)" formControlName="mobileNo">
+
+          </div>
+        <div class="form-group row">
+
+
+              <label for="landLineNo" class="control-label input-sm">Land-Line
+                No.</label>
+
+              <input type="text" class="form-control input-sm"
+                     mask="9999-999-999" clean="true" id="landLineNo"
+                     placeholder="Alternative Line" formControlName="landLineNo">
+
+          </div>
+
+
+
+
+          <div class="form-group row">
+
+              <label for="landZone" class="control-label input-sm">
+                Land Zone</label>
+
+              <input type="text" class="form-control input-sm" id="landZone"
+                     placeholder="Land Zone" formControlName="landZone">
+
+          </div>
+        <div class="form-group row">
+
+
+              <label for="plotNo" class="control-label input-sm">Plot
+                No.</label>
+
+              <input type="text" class="form-control input-sm" id="plotNo"
+                     placeholder="Plot No" formControlName="plotNo">
+            </div>
+
+
+
+
+
+
+        <div class="form-group row">
+          <label>Date </label>
+          <input class="form-control" placeholder="Enter date" formControlName="date"
+            [ngClass]="{'is-invalid': submitted && form.date.errors}">
+          <div *ngIf="submitted && form.date.errors" class="invalid-feedback">
+            <span *ngIf="form.date.errors.required">Date is mandatory.</span>
+          </div>
+        </div>-->
+
+      <div class="text-right">
+        <button type="submit" *ngIf="!appDetailMode && appEditMode"    (click) ="addPermit()" class="btn btn-success">Save</button>
+       <button type="submit" *ngIf=" appEditMode && appDetailMode "  (click) ="updatePermit()" class="btn btn-success">Update</button>
+        <button type="button" class="btn btn-danger ml-1"(click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</block-ui>
+
+<!--</ng-template>-->

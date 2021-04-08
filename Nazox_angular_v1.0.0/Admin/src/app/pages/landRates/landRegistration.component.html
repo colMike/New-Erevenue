@@ -1,0 +1,354 @@
+<block-ui>
+  <div class="container-fluid">
+    <app-pagetitle title="Land Details" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
+
+
+
+    <div class="row" *ngIf="(!appEditMode)" >
+
+      <div class="col-lg-12"  >
+        <div class="card">
+          <div class="card-body">
+            <div  >
+              <!--  -->
+              <button  type="button" class="btn btn-success mb-2"  (click)="initAddLand()" >
+
+                <!-- <a href="javascript:void(0);" class="btn btn-success mb-2" (click)="addUser()">-->
+                <i class="mdi mdi-plus mr-2"></i> New application
+              </button>
+            </div>
+
+
+            <div class="table-responsive mt-3"  >
+              <table class="table table-centered datatable dt-responsive nowrap"
+                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <thead class="thead-light">
+
+        <tr>
+          <th>
+            <div class="th">
+              # <span class="glyphicon glyphicon-chevron-up"
+                      data-ng-click=" order('count') "
+                      data-ng-class="{active: row == 'count'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-count') "
+              data-ng-class="{active: row == '-count'}"></span>
+            </div>
+          </th>
+          <th>
+            <div class="th">
+              Plot Number<span class="glyphicon glyphicon-chevron-up"
+                               data-ng-click=" order('plotNumber') "
+                               data-ng-class="{active: row == 'plotNumber'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-plotNumber') "
+              data-ng-class="{active: row == '-plotNumber'}"></span>
+            </div>
+          </th>
+          <th>
+            <div class="th">
+              Title Deed Number <span class="glyphicon glyphicon-chevron-up"
+                                      data-ng-click=" order('titleDeedNumber') "
+                                      data-ng-class="{active: row == 'titleDeedNumber'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-titleDeedNumber') "
+              data-ng-class="{active: row == '-titleDeedNumber'}"></span>
+            </div>
+          </th>
+          <th>
+            <div class="th">
+              Name <span class="glyphicon glyphicon-chevron-up"
+                         data-ng-click=" order('name') "
+                         data-ng-class="{active: row == 'name'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-name') "
+              data-ng-class="{active: row == '-name'}"></span>
+            </div>
+          </th>
+          <th>
+            <div class="th">
+              Acreage <span class="glyphicon glyphicon-chevron-up"
+                            data-ng-click=" order('acreage') "
+                            data-ng-class="{active: row == 'acreage'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-acreage') "
+              data-ng-class="{active: row == '-acreage'}"></span>
+            </div>
+          </th>
+          <th>
+            <div class="th">
+              Status <span class="glyphicon glyphicon-chevron-up"
+                           data-ng-click=" order('status') "
+                           data-ng-class="{active: row == 'status'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-status') "
+              data-ng-class="{active: row == '-status'}"></span>
+            </div>
+          </th>
+
+          <th style="width: 60px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let reg of land1; let i= index">
+          <td>{{i+1}}</td>
+          <td>{{reg.plotNumber}}</td>
+          <td>{{reg.titleDeedNumber}}</td>
+          <td>{{reg.name}}</td>
+          <td>{{reg.acreage}}</td>
+          <td>
+            <div class="badge font-size-12" [ngClass]="{'badge-soft-danger': reg.approved === 'Pending Approval',
+                    'badge-soft-success':reg.approved === 'Approved'}">
+              <ngb-highlight [result]="reg.approved"></ngb-highlight>
+            </div>
+            <!-- {{item.approved}}-->
+          </td>
+          <td style="padding: 1px;">
+            <button type="button" class="btn btn-success"
+                    style="height: 25px; width: 60px;" tooltip-placement="top"
+
+                    (click)="initEditLand(reg)">
+              <span class="glyphicon glyphicon-pencil" style="top: -2px;">Edit land</span>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal-body p-3" *ngIf="(appEditMode)"   >
+
+    <div class="text-left" >
+
+  <form  [formGroup]="landForm">
+    <section class="panel panel-default">
+      <section>
+      <div class="panel-heading input-sm">
+        <h4 class="card-title">Land Details</h4>
+      </div>
+
+      <div class="panel-body">
+
+        <div class="form-group">
+          <label for="plotNumber" class="col-sm-2 control-label input-sm">Plot
+            Number</label>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" id="plotNumber"
+                   placeholder="Plot Number" formControlName="plotNumber">
+          </div>
+
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="mapSheetNumber" class="col-sm-2 control-label input-sm">MapSheet
+            Number</label>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="mapSheetNumber" placeholder="MapSheet Number"
+                   formControlName="mapSheetNumber">
+          </div>
+        </div>
+
+     <!--   <div class="form-group">
+
+          <label for="location" class="col-sm-2 control-label input-sm">Location</label>
+
+          <div class="col-sm-8">
+            <input type="location" class="form-control input-sm" id="Farm Name"
+                   placeholder="Location" formControlName="location">
+          </div>
+        </div>-->
+
+        <!--<div class="form-group">
+
+          <label for="location" class="col-sm-2 control-label input-sm">Sub-location</label>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" id="sublocation"
+                   placeholder="Sublocation" formControlName="sublocation">
+          </div>
+        </div>-->
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group  ">
+              <label class="control-label">Land Type <strong style="color:red">*</strong></label>
+              <ng-select [items]="permitType1"
+                         bindLabel="permitTypeName"
+                         bindValue="permitTypeId"
+                         formControlName="permitTypeId">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10">
+        <div class="form-group" ng-show="permitTypeSelect!=14">
+          <label for="acreage" class="col-sm-2 control-label input-sm">Acreage
+          </label>
+
+          <div class="col-sm-8">
+            <input type="number" class="form-control input-sm" id="acreage"
+                   placeholder="Acreage" formControlName="acreage">
+          </div>
+        </div>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="col-md-10">
+          <label for="titleDeedNumber"
+                 class="col-sm-2 control-label input-sm">Title Deed Number</label>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="titleDeedNumber" placeholder="Title Deed Number"
+                   formControlName="titleDeedNumber">
+
+          </div>
+          </div>
+
+        </div>
+
+
+      </div>
+
+      </section>
+      <section>
+      <div class="panel-heading input-sm">
+        <h4 class="card-title">Owner Details</h4>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="name" class="col-sm-2 control-label input-sm">
+            Name</label>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" id="name"
+                   placeholder="name" formControlName="name">
+          </div>
+        </div>
+        <div class="form-group">
+
+          <label for="krapin" class="col-sm-2 control-label input-sm">KRA
+            PIN </label>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" id="krapin"
+                   placeholder="krapin" formControlName="krapin">
+          </div>
+        </div>
+
+        <div class="form-group">
+
+          <label for="nationalIdNumber"
+                 class="col-sm-2 control-label input-sm">National ID Number
+          </label>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="nationalIdNumber" placeholder="nationalIdNumber"
+                   formControlName="nationalIdNumber">
+          </div>
+        </div>
+        <div class="form-group">
+
+          <label for="nationalIdNumber"
+                 class="col-sm-2 control-label input-sm">Phone Number
+          </label>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm"
+                   id="phone" placeholder="phone"
+                   formControlName="phone">
+          </div>
+        </div>
+        <div class="form-group">
+
+          <label for="location" class="col-sm-2 control-label input-sm">Address</label>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" id="address"
+                   placeholder="Address" formControlName="address">
+          </div>
+        </div>
+        <div class="form-group">
+
+          <label for="location" class="col-sm-2 control-label input-sm">Postal Code</label>
+
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" id="address"
+                   placeholder="Address" formControlName="code">
+          </div>
+        </div>
+      </div>
+      </section>
+      <section>
+      <div class="panel-heading input-sm">
+
+        <h4 class="card-title">Land Location Details</h4>
+      </div>
+      <div class="panel-body">
+
+        <div class="col-md-6">
+          <div class="form-group ">
+            <label class="control-label">Sub County <strong style="color:red">*</strong></label>
+            <ng-select [items]="region1"
+                       bindLabel="subCountyName"
+                       bindValue="subCountyId"
+                       formControlName="subcountyId">
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group ">
+              <label class="control-label">Ward <strong style="color:red">*</strong></label>
+
+
+              <ng-select *ngIf="region1" [items]="ward1"
+                         bindLabel="wardName"
+                         bindValue="wardId"
+                         formControlName="wardId">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </section>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-8">
+
+
+          <button type="submit" *ngIf="!appDetailMode && appEditMode"     (click) ="addLand()" class="btn btn-success"><span class="glyphicon glyphicon-arrow-right"> save </span></button>
+
+          <button type="submit" *ngIf="appEditMode && appDetailMode "  (click) ="updateLand()" class="btn btn-success"><span class="glyphicon glyphicon-arrow-right"> update </span></button>
+          <button type="button" class="btn btn-warning input-sm"
+                  style="width: 100px" (click)="cancel()">
+            <span class="glyphicon glyphicon-remove"> Cancel </span>
+          </button>
+        </div>
+      </div>
+
+    </section>
+  </form>
+      </div>
+
+
+
+
+    </div>
+
+</block-ui>

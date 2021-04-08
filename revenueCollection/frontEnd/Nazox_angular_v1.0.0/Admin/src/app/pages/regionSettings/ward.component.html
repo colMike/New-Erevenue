@@ -1,0 +1,140 @@
+<div class="container-fluid">
+  <app-pagetitle title="Ward Details" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
+
+
+  <div class="row" *ngIf="(!isAddMode && !isExisting ) || (isExisting && isAddMode) ">
+
+    <div class="col-lg-12"  >
+      <div class="card">
+        <div class="card-body">
+
+          <div  >
+            <!--  -->
+            <button  type="button" class="btn btn-success mb-2"  (click)="initAddWard()" >
+
+              <!-- <a href="javascript:void(0);" class="btn btn-success mb-2" (click)="addUser()">-->
+              <i class="mdi mdi-plus mr-2"></i> AddWard
+            </button>
+          </div>
+          <div class="table-responsive mt-3"  >
+            <table class="table table-centered datatable dt-responsive nowrap"
+                   style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+              <thead class="thead-light">
+              <tr>
+                <!--   <th style="width: 20px;">
+                 &lt;!&ndash;    <div class="custom-control custom-checkbox">
+                       <input type="checkbox" class="custom-control-input" id="customercheck" />
+                       <label class="custom-control-label" for="customercheck">&nbsp;</label>
+                     </div>&ndash;&gt;
+                   </th>-->
+                <th>Ward Code</th>
+                <th>ward Name</th>
+                <th >Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let user of ward1; let i= index">
+                <!--     <td>
+                       <div class="custom-control custom-checkbox">
+                         <input type="checkbox" class="custom-control-input" :id="customercheck{{i}}" />
+                         <label class="custom-control-label" :for="customercheck{{i}}">&nbsp;</label>
+                       </div>
+                     </td>-->
+
+                <td>{{user.wardCode}}</td>
+                <td>{{user.wardName}}</td>
+
+                <td>
+                  <button type="button"   (click)="initEditWard(user)" title="Edit Ward">
+
+                    <i class="mdi mdi-pencil font-size-18"></i>
+                  </button>
+
+
+
+                  <!--   <a href="javascript:void(0);" class="text-danger" v-b-tooltip.hover title="Delete">
+                       <i class="mdi mdi-trash-can font-size-18"></i>
+                     </a>-->
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contacts model  -->
+<!--<ng-template #content role="document" let-modal="close"  *ngIf="!isAddMode " >-->
+<div class="modal-header"  >
+
+
+  <button type="button" class="close" aria-label="Close" ><!--(click)="modal('Cross click')"-->
+
+    <!--<span aria-hidden="true">&times;</span>-->
+  </button>
+</div>
+
+<div class="modal-body p-3" *ngIf="(!isAddMode && isExisting)|| (!isExisting && isAddMode)"  >
+  <div class="text-left" >
+
+    <form  [formGroup]="wardForm">
+
+      <div class="col-md-20">
+        <div class="form-group">
+          <label class="control-label">Sub County</label>
+          <ng-select [items]="region1"
+                     bindLabel="subCountyName"
+                     bindValue="subCountyId"
+                     formControlName="subCountyId">
+          </ng-select>
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label for="wardCode"> Ward Code</label>
+        <input type="text" class="form-control" id="wardCode" placeholder="Enter Ward Code" formControlName="wardCode"
+        >
+        <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+             <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+               <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+             </div>-->
+      </div>
+      <div class="form-group row">
+        <label for="wardName">Ward Name</label>
+        <input type="text" class="form-control" id="wardName" placeholder="Enter Ward Name" formControlName="wardName"
+        >
+        <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+             <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+               <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+             </div>-->
+      </div>
+
+
+
+      <!--  <div class="form-group row">
+          <label>Date </label>
+          <input class="form-control" placeholder="Enter date" formControlName="date"
+            [ngClass]="{'is-invalid': submitted && form.date.errors}">
+          <div *ngIf="submitted && form.date.errors" class="invalid-feedback">
+            <span *ngIf="form.date.errors.required">Date is mandatory.</span>
+          </div>
+        </div>-->
+
+      <div class="text-right">
+        <button type="submit"*ngIf="!isExisting && isAddMode"  (click) ="saveData()" class="btn btn-success">Save</button>
+
+        <button type="submit" *ngIf="!isAddMode && isExisting" (click) ="updateWard()" class="btn btn-success">Update</button>
+
+        <button type="button" class="btn btn-danger ml-1"(click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<!--</ng-template>-->

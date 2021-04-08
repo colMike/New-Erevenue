@@ -1,0 +1,480 @@
+<block-ui>
+  <div class="container-fluid">
+    <app-pagetitle title="Land Details" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
+
+
+
+    <div class="row" *ngIf="(!appEditMode)" >
+      <div class="col-lg-12"  >
+        <div class="card">
+          <div class="card-body">
+    <section class="panel panel-default table-dynamic">
+      <div class="panel-heading input-sm">
+        <strong><span class="glyphicon glyphicon-th"></span>
+          LandInvoice's List</strong>
+
+      </div>
+
+      <div class="table-filters">
+        <div class="row">
+          <div class="col-sm-4 col-xs-6">
+
+          </div>
+
+        </div>
+      </div>
+
+      <table
+        class="table table-bordered table-striped table-responsive input-sm">
+        <thead>
+        <tr>
+          <th>
+            <div class="th">
+              # <span class="glyphicon glyphicon-chevron-up"
+                      data-ng-click=" order('count') "
+                      data-ng-class="{active: row == 'count'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-count') "
+              data-ng-class="{active: row == '-count'}"></span>
+            </div>
+          </th>
+     <!--     <th>
+            <div class="th">
+              Reg No<span class="glyphicon glyphicon-chevron-up"
+                          data-ng-click=" order('regNo') "
+                          data-ng-class="{active: row == 'regNo'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-regNo') "
+              data-ng-class="{active: row == '-regNo'}"></span>
+            </div>
+          </th>-->
+          <th>
+            <div class="th">
+              Plot Number <span class="glyphicon glyphicon-chevron-up"
+                                data-ng-click=" order('plotNumber') "
+                                data-ng-class="{active: row == 'plotNumber'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-plotNumber') "
+              data-ng-class="{active: row == '-plotNumber'}"></span>
+            </div>
+          </th>
+          <th>
+            <div class="th">
+              Applicant <span class="glyphicon glyphicon-chevron-up"
+                              data-ng-click=" order('applicant') "
+                              data-ng-class="{active: row == 'applicant'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-applicant') "
+              data-ng-class="{active: row == '-applicant'}"></span>
+            </div>
+          </th>
+
+          <th>
+            <div class="th">
+              Date Of Application <span class="glyphicon glyphicon-chevron-up"
+                                        data-ng-click=" order('appliedOn') "
+                                        data-ng-class="{active: row == 'appliedOn'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-appliedOn') "
+              data-ng-class="{active: row == '-appliedOn'}"></span>
+            </div>
+          </th>
+          <th>
+            <div class="th">
+              Land Invoice Status<span class="glyphicon glyphicon-chevron-up"
+                                       data-ng-click=" order('status') "
+                                       data-ng-class="{active: row == 'status'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-status') "
+              data-ng-class="{active: row == '-status'}"></span>
+            </div>
+          </th>
+          <th>
+            <div class="th">
+              Payment Status <span class="glyphicon glyphicon-chevron-up"
+                                   data-ng-click=" order('paidStatus') "
+                                   data-ng-class="{active: row == 'paidStatus'}"></span><span
+              class="glyphicon glyphicon-chevron-down"
+              data-ng-click=" order('-paidStatus') "
+              data-ng-class="{active: row == '-paidStatus'}"></span>
+            </div>
+          </th>
+
+
+          <th style="width: 60px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let landinvoice of land1; let i= index">
+          <td>{{landinvoice.count}}</td>
+          <!-- <td>{{landinvoice.regNo}}</td>-->
+          <td>{{landinvoice.plotNumber}}</td>
+          <td>{{landinvoice.name}}</td>
+          <td>{{landinvoice.appliedOn}}</td>
+          <td>{{landinvoice.status}}</td>
+          <td>{{landinvoice.paidStatus}}</td>
+          <td style="padding: 1px;">
+            <button type="button" class="btn btn-success"
+                    style="height: 25px; width: 60px;" tooltip-placement="top"
+
+                    (click)="initEditLand(landinvoice)">
+              <span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+            </button>
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+
+
+    </section>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="modal-body p-3" *ngIf="(appEditMode)"   >
+
+        <div class="text-left" >
+      <form  [formGroup]="landForm">
+    <section class="panel panel-default">
+
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-6">
+            <section class="panel panel-default">
+              <div class="panel-heading input-sm">
+                <strong><span class="glyphicon glyphicon-th"></span>
+                  Land Details </strong>
+              </div>
+              <div class="panel-body">
+
+                  <div class="form-group col-sm-12 noPadding">
+
+                    <div class="col-sm-4" style="text-align: right;">
+                      <label for="plotNumber" class="control-label input-sm">
+                        Plot Number </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm"
+                             id="plotNumber"formControlName="plotNumber" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-12 noPadding">
+
+                    <div class="col-sm-4" style="text-align: right;">
+                      <label for="mapSheetNumber" class="control-label input-sm">
+                        Map Sheet Number </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm"
+                             id="mapSheetNumber"formControlName="mapSheetNumber" readonly>
+                    </div>
+
+                  </div>
+
+
+                  <div class="form-group col-sm-12 noPadding">
+                    <div class="col-sm-4" style="text-align: right;">
+                      <label for="titleDeedNumber" class="control-label input-sm">Title
+                        Deed Number </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm"
+                             id="titleDeedNumber"formControlName="titleDeedNumber" readonly>
+
+                    </div>
+                  </div>
+                 <!-- <div class="form-group col-sm-12 noPadding">
+                    <div class="col-sm-4" style="text-align: right;">
+                      <label for="regNo" class="control-label input-sm">Reg
+                        No </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm" id="regNo"
+                            formControlName="regNo" readonly>
+
+                    </div>
+                  </div>-->
+                  <!--  <div class="form-group col-sm-12 noPadding">
+                    <div class="col-sm-4" style="text-align: right;">
+                      <label for="permitTypeSelect" class="control-label input-sm">Land Type
+                      </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <select disabled style="width: 100%" ui-select2=""formControlName="permitTypeSelect"
+                                         id="permitTypeSelect">
+                                     <option data-ng-repeat="permitType in permitTypes"
+                                        ng-selected="{{permitType.permitTypeId}}" value="{{permitType.permitTypeId}}">{{permitType.permitTypeName}}</option>
+                                    </select>
+                    </div>
+                  </div> -->
+
+                    <div class="form-group col-sm-12 noPadding">
+                      <div class="col-sm-8" style="text-align: left;">
+                        <label class="control-label">Land Type <strong style="color:red">*</strong></label>
+                        <ng-select [items]="permitType1"
+                                   bindLabel="permitTypeName"
+                                   bindValue="permitTypeId"
+                                   formControlName="permitTypeId">
+                        </ng-select>
+                      </div>
+                    </div>
+
+
+              </div>
+            </section>
+          </div>
+          <div class="col-md-6">
+            <section class="panel panel-default">
+              <div class="panel-heading input-sm">
+                <strong><span class="glyphicon glyphicon-th"></span>
+                  Other Details </strong>
+              </div>
+              <div class="panel-body">
+
+                  <div class="form-group col-sm-12 noPadding">
+
+                    <div class="col-sm-4" style="text-align: left;">
+                      <label for="name" class="control-label input-sm">
+                      Applicant  Name</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm" id="name"
+                             placeholder="name"formControlName="name" readonly>
+                    </div>
+
+                  </div>
+                  <div class="form-group col-sm-12 noPadding">
+
+                    <div class="col-sm-4" style="text-align: left;">
+                      <label for="krapin" class="control-label input-sm">
+                        krapin </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm" id="krapin"
+                             placeholder="krapin"formControlName="krapin" readonly>
+                    </div>
+
+                  </div>
+                  <div class="form-group col-sm-12 noPadding">
+                    <div class="col-sm-4" style="text-align: left;">
+                      <label for="nationalIdNumber" class="control-label input-sm"
+                             readonly>National Id Number </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm"
+                             id="nationalIdNumber" placeholder="nationalIdNumber"
+                            formControlName="nationalIdNumber" readonly>
+                    </div>
+                  </div>
+                <div class="form-group col-sm-12 noPadding">
+                  <div class="col-sm-8" style="text-align: left;">
+                      <label class="control-label">Sub County <strong style="color:red">*</strong></label>
+                      <ng-select [items]="region1"
+                                 bindLabel="subCountyName"
+                                 bindValue="subCountyId"
+                                 formControlName="subcountyId">
+                      </ng-select>
+                    </div>
+                  </div>
+                <div class="form-group col-sm-12 noPadding">
+                  <div class="col-sm-8" style="text-align: left;">
+                      <div class="form-group ">
+                        <label class="control-label">Ward <strong style="color:red">*</strong></label>
+
+
+                        <ng-select *ngIf="region1" [items]="ward1"
+                                   bindLabel="wardName"
+                                   bindValue="wardId"
+                                   formControlName="wardId">
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+              </div>
+            </section>
+          </div>
+        </div>
+        <section class="panel panel-default">
+
+          <div class="panel-body">
+            <div class="form-group col-sm-12">
+       <!--       <div class="col-sm-6 noPadding" ng-show="landStatus=='Rejected'">
+                <label class="control-label ">{{rejectMessage}}</label>
+              </div>
+              <div class="col-sm-6 noPadding" ng-show="showReason">
+                <div class="col-sm-4" style="text-align: right;">
+                  <label for="reason" class="control-label input-sm">
+                    Reason</label>
+                </div>
+                <div class="col-sm-8">
+									<textarea type="text" class="form-control input-sm"
+                            id="reasonDesc"formControlName="rejectReason"
+                            ng-disabled="isExisting"></textarea>
+                </div>
+              </div>-->
+         <!--     <div class="col-sm-6 noPadding"
+                   ng-show="((landStatus!='Approved') && (paidStatus!='Paid'))">
+                <div class="col-sm-4" style="text-align: right;">
+                  <label for="status" class="control-label input-sm">Select
+                    Status Type</label>
+                </div>
+                <div class="col-sm-8">
+                  <select style="width: 100%" ui-select2=""
+                         formControlName="statusSelect" id="statusSelect">
+                    <option data-ng-repeat="status in statusList"
+                            ng-selected="{{status.statusId}}" value="{{status.statusId}}">{{status.statusName}}</option>
+                  </select>
+                </div>
+              </div>-->
+
+               <!-- <table
+                  ng-show="( (landStatus==='Approved') || (paidStatus==='Paid'))"
+                  class="table table-bordered table-striped table-responsive input-sm">
+                  <thead>
+                  <tr>
+                    <th>
+                      <div class="th">#</div>
+                    </th>
+
+                    <th>
+                      <div class="th">Detail</div>
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>Approved By</td>
+                    <td>{{approvedUser}}</td>
+                  </tr>
+                  <tr>
+                    <td>Approved/Rejected On</td>
+                    <td>{{approvedOn | date : 'shortDate'}}</td>
+                  </tr>
+                  <tr ng-show="landStatus=='Paid'">
+                    <td>Paid By</td>
+                    <td>{{paidUser}}</td>
+                  </tr>
+                  <tr ng-show="landStatus=='Paid'">
+                    <td>Paid On</td>
+                    <td>{{paidOn | date : 'shortDate'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Fee</td>
+                    <td>{{fee}}</td>
+                  </tr>
+                  <tr>
+                    <td>Acreage</td>
+                    <td>{{acreage}}</td>
+                  </tr>
+                  <tr>
+                    <td>Penalty</td>
+                    <td>{{penalty}}</td>
+                  </tr>
+                  <tr>
+                    <td>Amount Paid</td>
+                    <td>{{amountpaid}}</td>
+                  </tr>
+                  <tr>
+                    <td>Outstanding</td>
+                    <td>{{balance}}</td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td>{{total}}</td>
+                  </tr>
+                  </tbody>
+                </table>-->
+
+
+
+                <div class="col-sm-12" *ngIf=" landForm.value.paidStatus !='paid'">
+                  <dl class="dl-horizontal">
+                    <div class="col-sm-4" style="text-align: left;">
+                      <label for="serviceCode " class="control-label input-sm">Payment
+                        Mode </label>
+                    </div>
+                    <div class="col-sm-8 noPadding" style="margin-top:5px">
+                      <!--<label class="ui-radio"><input name="paymentMode"
+                                                    formControlName="paymentMode" type="radio" value="C" checked><span>Bank</span></label>-->
+                      <label class="ui-radio"><input name="paymentMode"
+                                                    formControlName="paymentMode" type="radio" value="M"><span>Mpesa</span></label>
+                      <!--<label class="ui-radio"><input name="paymentMode"
+                                                    formControlName="paymentMode" type="radio" value="K"><span>Cash</span></label>-->
+                    </div>
+                  </dl>
+
+
+                <div class="form-group col-sm-12 noPadding"
+                     ng-show="paymentMode=='M'">
+                  <div class="col-sm-12 noPadding">
+                    <div class="col-sm-4" style="text-align: right;">
+                      <label for="mpesaCode" class="control-label input-sm">Mpesa
+                        code </label>
+                    </div>
+                    <div class="col-sm-8 noPadding">
+                      <input type="text" class="form-control input-sm"
+                             style="width: 100%" id="mpesaCode" placeholder="Mpesa code"
+                            formControlName="mpesaCode">
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+                <div class="form-group col-sm-12 noPadding">
+                  <div class="col-sm-12 noPadding" *ngIf="(landForm.value.paidStatus =='paid' )"">
+                    <div class="col-sm-4" style="text-align: right;">
+                      <label for="transNo" class="control-label input-sm">
+                        Amount Payable</label>
+                    </div>
+                    <div class="col-sm-8 noPadding">
+                      <input type="text" class="form-control input-sm"
+                             style="width: 100%" id="transNo"
+                             placeholder="Amount Paid"formControlName="fee" readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+
+              <button type="submit"     *ngIf="(landForm.value.paidStatus !='paid' )" (click) ="updateLand()" class="btn btn-success">Save</button>
+              <span></span>
+              <a class="btn btn-success input-sm"
+                 ng-click="printInvoice()" target="_blank"
+                 *ngIf="(landForm.value.paidStatus!='paid' )">Print Invoice</a>
+
+              <a class="btn btn-success input-sm"
+                 (click)="printInvoice()" target="_blank"
+                 *ngIf="(landForm.value.paidStatus=='paid' )">Print Invoice receipt</a>
+
+              <span></span>
+              <button type="submit"    (click) ="cancel()" class="btn btn-warning">    <span class="glyphicon glyphicon-remove"> Cancel </span></button>
+
+
+            </div>
+
+
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+  </form>
+
+
+</div>
+  </div>
+    </div>
+
+</block-ui>
