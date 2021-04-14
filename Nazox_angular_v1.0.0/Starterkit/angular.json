@@ -32,8 +32,7 @@
               "src/assets/scss/app.scss",
               "src/styles.scss"
             ],
-            "scripts": [
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -128,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "nazox"
+  "defaultProject": "nazox",
+  "cli": {
+    "analytics": "1cb46b8c-d454-4329-8a86-165df897e433"
+  }
 }

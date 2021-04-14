@@ -14,8 +14,10 @@ import java.util.List;
 
 @Component
 public class DeviceRegBalImpl implements DeviceRegBal {
+
     @Autowired
     DeviceRegDao deviceRegDao;
+
     @Override
     public ResponseMessage registerDevice(DeviceReg deviceReg) {
         try {
@@ -39,4 +41,9 @@ public class DeviceRegBalImpl implements DeviceRegBal {
     public List<DeviceReg> viewDevice() {
         return deviceRegDao.findAll();
     }
+
+//    @Override
+//    public DeviceReg getDeviceByDeviceImei(String device_imei) {
+//        return deviceRegDao.findByDevice_imei(device_imei);
+//    }
 }

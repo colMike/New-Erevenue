@@ -10,4 +10,5 @@ import java.util.List;
 public interface DeviceRegBal {
     ResponseMessage registerDevice(DeviceReg deviceReg);
     List<DeviceReg> viewDevice();
+//    DeviceReg getDeviceByDeviceImei(String device_imei);
 }

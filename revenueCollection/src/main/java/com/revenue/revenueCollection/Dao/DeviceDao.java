@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface DeviceDao extends JpaRepository<Device_linking,Integer> {
+public interface DeviceDao extends JpaRepository<Device_linking, Integer> {
     @Query(nativeQuery =true, value = "select u.id\n" +
             ",u.active\n" +
             ",u.agent_code\n" +
