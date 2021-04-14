@@ -5,7 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { ChatComponent } from './chat/chat.component';
 import { KanbanComponent } from './kanban/kanban.component';
-import {ServiceGuard} from "./services/service.guard";
+import {ServiceGuard} from './services/service.guard';
 
 const routes: Routes = [
     { path: '', component: DashboardComponent },

@@ -1,130 +1,152 @@
 <block-ui>
-<div class="container-fluid">
-  <app-pagetitle title="Device Registration Details" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
+  <div class="container-fluid">
+    <app-pagetitle [breadcrumbItems]="breadCrumbItems" title="Device Registration Details"></app-pagetitle>
 
 
-  <div class="row" *ngIf="(!isAddMode && !isExisting ) || (isExisting && isAddMode) ">
+    <div *ngIf="(!isAddMode && !isExisting ) || (isExisting && isAddMode) " class="row">
 
-    <div class="col-lg-12"  >
-      <div class="card">
-        <div class="card-body">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
 
-          <div  >
-            <!--  -->
-            <button  type="button" class="btn btn-success mb-2"  (click)="initAddDevice()" >
+            <div>
+              <!--  -->
+              <button (click)="initAddDevice()" class="btn btn-success mb-2" type="button">
 
-              <!-- <a href="javascript:void(0);" class="btn btn-success mb-2" (click)="addUser()">-->
-              <i class="mdi mdi-plus mr-2"></i> Register Device
-            </button>
-          </div>
-          <div class="table-responsive mt-3"  >
-            <table class="table table-centered datatable dt-responsive nowrap"
-                   style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-              <thead class="thead-light">
-              <tr>
-                <!--   <th style="width: 20px;">
-                 &lt;!&ndash;    <div class="custom-control custom-checkbox">
-                       <input type="checkbox" class="custom-control-input" id="customercheck" />
-                       <label class="custom-control-label" for="customercheck">&nbsp;</label>
-                     </div>&ndash;&gt;
-                   </th>-->
-
-
-                <th>Device IMEI</th>
-                <th>Status</th>
-                <th >Action</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let user of Device1; let i= index">
-                <!--     <td>
-                       <div class="custom-control custom-checkbox">
-                         <input type="checkbox" class="custom-control-input" :id="customercheck{{i}}" />
-                         <label class="custom-control-label" :for="customercheck{{i}}">&nbsp;</label>
-                       </div>
-                     </td>-->
-                <td>{{user.userFullName }}</td>
-                <td>{{user.device_imei }}</td>
-                <td>{{user.active}}</td>
-
-                <td>
-                  <button type="button"   (click)="initEditDevice(user)" title="Edit Ward">
-
-                    <i class="mdi mdi-pencil font-size-18"></i>
-                  </button>
+                <!-- <a href="javascript:void(0);" class="btn btn-success mb-2" (click)="addUser()">-->
+                <i class="mdi mdi-plus mr-2"></i> Register Device
+              </button>
+            </div>
+            <div class="p-4 mt-3">
+              <table class="table table-hover table-bordered table-centered datatable dt-responsive nowrap p-4"
+                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <thead class="thead-light">
+                <tr>
+                  <!--   <th style="width: 20px;">
+                   &lt;!&ndash;    <div class="custom-control custom-checkbox">
+                         <input type="checkbox" class="custom-control-input" id="customercheck" />
+                         <label class="custom-control-label" for="customercheck">&nbsp;</label>
+                       </div>&ndash;&gt;
+                     </th>-->
 
 
+                  <th></th>
+                  <th>Device IMEI</th>
+                  <th>Status</th>
+                  <th class="text-center">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let user of Device1; let i= index">
+                  <!--     <td>
+                         <div class="custom-control custom-checkbox">
+                           <input type="checkbox" class="custom-control-input" :id="customercheck{{i}}" />
+                           <label class="custom-control-label" :for="customercheck{{i}}">&nbsp;</label>
+                         </div>
+                       </td>-->
+                  <!--                <td>{{user.userFullName }}</td>-->
+                  <td>{{i + 1}}</td>
+                  <td>{{user.device_imei }}</td>
+                  <td>{{user.active === 'true' ? 'Active' : 'Inactive'}}</td>
 
-                  <!--   <a href="javascript:void(0);" class="text-danger" v-b-tooltip.hover title="Delete">
-                       <i class="mdi mdi-trash-can font-size-18"></i>
-                     </a>-->
-                </td>
-              </tr>
-              </tbody>
-            </table>
+                  <td class="text-center">
+                    <button (click)="initEditDevice(user)" class="btn-rounded btn-light btn-lg btn-outline-primary"
+                            title="Edit Device" type="button">
+                      <i class="ri-quill-pen-line"></i>
+                      Edit Device
+                    </button>
+
+
+                    <!--   <a href="javascript:void(0);" class="text-danger" v-b-tooltip.hover title="Delete">
+                         <i class="mdi mdi-trash-can font-size-18"></i>
+                       </a>-->
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Contacts model  -->
-<!--<ng-template #content role="document" let-modal="close"  *ngIf="!isAddMode " >-->
-<div class="modal-header"  >
-
-
-  <button type="button" class="close" aria-label="Close" ><!--(click)="modal('Cross click')"-->
-
-    <!--<span aria-hidden="true">&times;</span>-->
-  </button>
-</div>
-
-<div class="modal-body p-3" *ngIf="(!isAddMode && isExisting)|| (!isExisting && isAddMode)"  >
-  <div class="text-left" >
-
-    <form  [formGroup]="deviceForm">
+  <!-- Contacts model  -->
+  <!--<ng-template #content role="document" let-modal="close"  *ngIf="!isAddMode " >-->
+  <!--  <div class="modal-header">-->
 
 
+  <!--    <button aria-label="Close" class="close" type="button">&lt;!&ndash;(click)="modal('Cross click')"&ndash;&gt;-->
 
+  <!--      &lt;!&ndash;<span aria-hidden="true">&times;</span>&ndash;&gt;-->
+  <!--    </button>-->
+  <!--  </div>-->
 
-      <div class="form-group row">
-        <label for="device_imei"> Device IMEI number</label>
-        <input type="text" class="form-control" id="device_imei" placeholder="Enter device IMEI" formControlName="device_imei"
-        >
-        <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
-             <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
-               <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
-             </div>-->
-      </div>
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" id="active"  formControlName="active"/>
-        <label class="custom-control-label" for="active">Active</label>
-      </div>
+  <div *ngIf="(!isAddMode && isExisting)|| (!isExisting && isAddMode)" class="modal-body p-3 col-xxl-8">
+    <div class="text-left">
 
+      <form [formGroup]="deviceForm">
 
-
-      <!--  <div class="form-group row">
-          <label>Date </label>
-          <input class="form-control" placeholder="Enter date" formControlName="date"
-            [ngClass]="{'is-invalid': submitted && form.date.errors}">
-          <div *ngIf="submitted && form.date.errors" class="invalid-feedback">
-            <span *ngIf="form.date.errors.required">Date is mandatory.</span>
+        <div class="card mr-5 p-5  col-xxl-8">
+          <div>
+            <div class="form-group col-xxl-8">
+              <label for="device_imei"> Device IMEI number</label>
+              <input class="form-control" formControlName="device_imei" id="device_imei" placeholder="Enter device IMEI"
+                     type="text"
+              >
+            </div>
+            <!-- [ngClass]="{'is-invalid': submitted && form.userFullName.errors}">
+                 <div *ngIf="submitted && form.userFullName.errors" class="invalid-feedback">
+                   <span *ngIf="form.userFullName.errors.required">Name is mandatory.</span>
+                 </div>-->
           </div>
-        </div>-->
+          <div class="custom-control custom-checkbox col-xxl-8">
+            <div class="form-check mb-3 pl-0 ml-0">
 
-      <div class="text-right">
-        <button type="submit"*ngIf="!isExisting && isAddMode"  (click) ="saveData()" class="btn btn-success">Save</button>
+              <input [checked]=checkItem()
+                     class="form-check-input"
+                     formControlName='active'
+                     id="active"
+                     type="checkbox"
+              >
+              <label class="form-check-label" for="active">
+                Active
+              </label>
+            </div>
 
-        <button type="submit" *ngIf="!isAddMode && isExisting" (click) ="updateDevice()" class="btn btn-success">Update</button>
+            <!--            <input [checked]=checkItem() class="custom-control-input"-->
+            <!--                   formControlName="active"-->
+            <!--                   id="active" type="checkbox">-->
+            <!--            <label class="custom-control-label" for="active">Active</label>-->
+          </div>
 
-        <button type="button" class="btn btn-danger ml-1"(click)="cancel()">Cancel</button>
-      </div>
-    </form>
+          <div class="text-right col-xxl-8">
+            <button (click)="saveData()" *ngIf="!isExisting && isAddMode" class="btn btn-success" type="submit">Save
+            </button>
+
+            <button (click)="updateDevice()" *ngIf="!isAddMode && isExisting" class="btn btn-success" type="submit">
+              Update
+            </button>
+
+            <button (click)="cancel()" class="btn btn-danger ml-1" type="button">Cancel</button>
+          </div>
+        </div>
+
+
+        <!--  <div class="form-group row">
+            <label>Date </label>
+            <input class="form-control" placeholder="Enter date" formControlName="date"
+              [ngClass]="{'is-invalid': submitted && form.date.errors}">
+            <div *ngIf="submitted && form.date.errors" class="invalid-feedback">
+              <span *ngIf="form.date.errors.required">Date is mandatory.</span>
+            </div>
+          </div>-->
+
+
+      </form>
+    </div>
   </div>
-</div>
 
 
-
-<!--</ng-template>-->
+  <!--</ng-template>-->
 </block-ui>
